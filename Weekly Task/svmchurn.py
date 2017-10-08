@@ -7,14 +7,21 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report,confusion_matrix
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.feature_selection import SelectFromModel
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import tree
 from sklearn import svm
 
-#loading dataavg_dist	avg_rating_by_driver	avg_rating_of_driver	avg_surge	surge_pct	trips_in_first_30_days	luxury_car_user	weekday_pct	city_Astapor	city_King's Landing	city_Winterfell	phone_Android	phone_iPhone	phone_no_phone	churn
-#df = pd.read_csv('churn.csv',names=['churn', 'dataavg_dist', 'avg_rating_by_driver','avg_rating_of_driverattribute3','avg_surge','surge_pct','trips_in_first_30_days','luxury_car_user','weekday_pct','city_Astapor',"city_King's Landing",'city_Winterfell','phone_Android','phone_no_phone'],low_memory=False)
+#loading data
+#'avg_dist	avg_rating_by_driver	avg_rating_of_driver	avg_surge	surge_pct	trips_in_first_30_days	luxury_car_user	weekday_pct	city_Astapor	city_King's Landing	city_Winterfell	phone_Android	phone_iPhone	phone_no_phone	churn
 df = pd.read_csv('churn.csv')
+#,names=['avg_dist', 'avg_rating_by_driver','avg_rating_of_driver','avg_surge','surge_pct','trips_in_first_30_days','luxury_car_user','weekday_pct','city_Astapor',"city_KingsLanding",'city_Winterfell','phone_Android','phone_no_phone'],low_memory=False)
 
-columns = ['luxury_car_user','avg_dist','city_Astapor',"city_KingsLanding",'phone_Android','phone_iPhone']
+#df = pd.read_csv('churn.csv')
+columns =['avg_dist', 'avg_rating_by_driver','avg_rating_of_driver','avg_surge','surge_pct','trips_in_first_30_days','luxury_car_user','weekday_pct','city_Astapor',"city_KingsLanding",'city_Winterfell','phone_Android','phone_no_phone']
+#columns = ['luxury_car_user','avg_dist','city_Astapor',"city_KingsLanding",'phone_Android','phone_iPhone']
 df1 = pd.DataFrame(df, columns=columns)
 
 # removing the first row of data as it was name of column
@@ -24,10 +31,23 @@ df1 = pd.DataFrame(df, columns=columns)
 y = df['churn']
 #x=df.drop('churn',axis=1)
 
-#split the data into training and testing sets
-x_train_original,x_test_original,y_train_original,y_test_original=train_test_split(df1,y,test_size=0.25)
-#For standardizing data
+#Univariate Selection
+X_new = SelectKBest(chi2, k=5).fit_transform(df1, y)
+print(X_new)
+print(X_new.shape)
+#x=df.drop('churn',axis=1)
 
+#Tree Based Feature Selection
+clf = ExtraTreesClassifier()
+clf = clf.fit(df1, y)
+model = SelectFromModel(clf, prefit=True)
+X_new1 = model.transform(df1)
+print(X_new1.shape)
+
+
+#split the data into training and testing sets
+x_train_original,x_test_original,y_train_original,y_test_original=train_test_split(X_new,y,test_size=0.25)
+#For standardizing data
 
 print("             @@@@@@@@@@@Original Accuracy and Results@@@@@@@@@@@\n")
 #clf = tree.DecisionTreeClassifier(criterion='entropy', max_depth=5,min_samples_leaf=5)
