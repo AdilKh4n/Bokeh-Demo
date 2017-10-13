@@ -1,0 +1,13 @@
+avg_dist
+avg_rating_by_driver
+avg_rating_of_driver
+avg_surge
+surge_pct
+trips_in_first_30_days
+luxury_car_user
+weekday_pct
+city_Astapor
+city_KingsLanding
+city_Winterfell
+phone_Android
+phone_no_phone
