@@ -25,7 +25,7 @@ from bokeh.charts import Bar
 #    return dict(x=random(size=N), y=random(size=N), r=random(size=N) * 0.03)
 
 
-#dict = {'values':[10,20,30,40], 'names':['TP','FP','TN',"FN"]}
+#dict = {'values':[10,20,30,40], 'names':['TP\nFP\nTN',"FN"]}
 #source = dict
 
 #p = Bar(df, 'names', values='values', title="test chart")
@@ -49,7 +49,7 @@ def update_points(attrname, old, new):
     N = float(input.value)
     D = bool(select.value)
 #    source.data = get_data(N)
-    df = pd.read_csv('PredictFailure_v1.0.csv',names=['failure', 'attribute1',  'attribute2','attribute3','attribute4','attribute5','attribute6','attribute7','attribute8','attribute9'],low_memory=False)
+    df = pd.read_csv('PredictFailure_v1.0.csv',names=['failure', 'attribute1',  'attribute2\nattribute3\nattribute4\nattribute5\nattribute6\nattribute7\nattribute8\nattribute9'],low_memory=False)
     df=df[1:]
     df['failure']=[1 if b==1 or b=='1' else 0 for b in df.failure]
     y=df.failure
@@ -66,7 +66,7 @@ def update_points(attrname, old, new):
     print("False Positive:",fp)
     print("False Negative:",fn)
     print("True Positive:",tp)
-    #newdict = {'values':[tn,fp,tn,fn], 'names':['TP','FP','TN',"FN"]2
+    #newdict = {'values':[tn,fp,tn,fn], 'names':['TP\nFP\nTN',"FN"]2
     source.data =dict(bins=[0, 1, 2], counts=[tp, fp, fn])
     
 input.on_change('value', update_points)

@@ -1,0 +1,9 @@
+x_train_original,x_test_original,y_train_original,y_test_original=train_test_split(X_new,y,test_size=0.25)\n
+#For standardizing data\n
+\n
+clf = svm.LinearSVC(random_state=0)\n
+clf.fit(x_train_original,y_train_original)\n
+predictions=clf.predict(x_test_original)\n
+#print("Accuracy =", accuracy_score(y_test_original,predictions))\n
+#print(np.unique(predictions))\n
+tn, fp, fn, tp = confusion_matrix(y_test_original,predictions).ravel()\n
